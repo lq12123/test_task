@@ -16,6 +16,7 @@ public:
     explicit Branch(const QString& branchName, QObject *parent = nullptr);
 
     QStringList getArchs();
+    QStringList getPkgNames(const QString& arch);
 
 signals:
 
@@ -24,6 +25,8 @@ private:
     QStringList _supported_archs;
 
     QString sendQuery(const QUrl& url) const;
+    QString getAllPackages(const QString& arch) const;
+
     void getSupportedArchs();
 };
 

@@ -1,4 +1,4 @@
-#include "jsonwork.h"
+#include <jsonwork.hpp>
 
 #include <QJsonDocument>
 #include <QJsonValue>

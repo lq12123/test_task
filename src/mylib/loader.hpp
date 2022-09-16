@@ -13,6 +13,7 @@ public:
     explicit Loader(const QUrl& url, QObject *parent = nullptr);
 
     QString sendQuery();
+    void addQueryParam(const QString& key, const QString& param);
 
 signals:
     void finished();

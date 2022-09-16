@@ -1,8 +1,14 @@
-#include "branch.h"
+#include <branch.hpp>
 
 #include <QUrlQuery>
-#include "loader.hpp"
-#include "jsonwork.h"
+#include <loader.hpp>
+#include <jsonwork.hpp>
+
+#define RESTAPI_URL "https://rdb.altlinux.org/api"
+#define RESTAPI_ALL_ARCHS "site/all_pkgset_archs"
+
+#define RESTAPI_ADDR "https://rdb.altlinux.org/api/export/" \
+                     "branch_binary_packages"
 
 Branch::Branch(const QString& branchName, QObject* parent)
     : QObject{parent}, _branch_name{branchName} {}
@@ -45,6 +51,22 @@ void Branch::getSupportedArchs()
 QString Branch::sendQuery(const QUrl& url) const
 {
     Loader loader(url);
+
+    return loader.sendQuery();
+}
+
+/**
+ * @brief Branch::getAllPackages
+ * Adds parameters to the url and sends a request to get all
+ * the @p arch architecture packages.
+ * @param arch
+ * @return a list of all @p arch architecture packages.
+ */
+QString Branch::getAllPackages(const QString& arch) const
+{
+    QUrl url(QString("%1/%2").arg(RESTAPI_ADDR, _branch_name));
+    Loader loader(url);
+    loader.addQueryParam("arch", arch);
 
     return loader.sendQuery();
 }

@@ -3,8 +3,7 @@
 
 #include <QtCore/qglobal.h>
 #include <QObject>
-
-#include <QNetworkReply>
+#include <branch.hpp>
 
 #if defined(MYLIB_LIBRARY)
 #  define MYLIB_EXPORT Q_DECL_EXPORT
@@ -17,13 +16,15 @@ class MYLIB_EXPORT Mylib : public QObject
     Q_OBJECT
 
 public:
-    explicit Mylib(const QString& branch_1, const QString& branch_2,
+    explicit Mylib(const QString& branch1, const QString& branch2,
                    QObject* parent = nullptr);
 
     void compare();
-    void Test() const;
-
 private:
+    Branch _branch1;
+    Branch _branch2;
+
+    QStringList getCommonArchs(const QString& arch);
 };
 
 #endif // MYLIB_H

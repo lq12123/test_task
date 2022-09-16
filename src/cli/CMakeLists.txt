@@ -19,6 +19,10 @@ set(cli_VERSION "${cli_VERSION_MAJOR}.${cli_VERSION_MINOR}.${cli_VERSION_PATCH}"
 set(PATH_TO_MYLIB ${CMAKE_SOURCE_DIR}/src/mylib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules
+    ${CMAKE_MODULE_PATH}
+)
+
 configure_file(
     "${PROJECT_SOURCE_DIR}/version.h.in"
     "${PROJECT_BINARY_DIR}/version.h"
@@ -26,6 +30,7 @@ configure_file(
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network)
+find_package(_OpenSSL 1.1 EXACT REQUIRED)
 
 add_executable(cli
   main.cpp
@@ -33,14 +38,21 @@ add_executable(cli
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${PATH_TO_MYLIB})
 
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_link_directories(${PROJECT_NAME}
-    PRIVATE ${CMAKE_SOURCE_DIR}/lib
-    ${CMAKE_CURRENT_SOURCE_DIR}/deps
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/lib
+)
+
+target_link_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Network
+    ssl
+    crypto
     mylib
 )
 

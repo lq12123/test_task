@@ -1,4 +1,4 @@
-#include "loader.hpp"
+#include <loader.hpp>
 
 #include <QNetworkRequest>
 #include <QThread>
@@ -77,4 +77,17 @@ void Loader::onReady(QNetworkReply* reply)
 void Loader::quit()
 {
     thread()->quit();
+}
+
+/**
+ * @brief Loader::addQueryParam
+ * Adds parameters in the form "key=value" to the url address.
+ * @param key
+ * @param param
+ */
+void Loader::addQueryParam(const QString& key, const QString& param)
+{
+    QUrlQuery query;
+    query.addQueryItem(key, param);
+    _url.setQuery(query);
 }

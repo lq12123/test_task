@@ -1,6 +1,6 @@
 #include <QCoreApplication>
 
-#include <mylib.h>
+#include <mylib.hpp>
 
 int main(int argc, char *argv[])
 {
