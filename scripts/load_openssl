@@ -1,0 +1,15 @@
+#!/bin/bash
+
+SCRIPT_PATH=$(realpath "$0")
+SCRIPT_DIRECTORY=$(echo ${SCRIPT_PATH%/*})
+TEMPORARY_DIRECTORY=tmp
+
+mkdir -p "${SCRIPT_DIRECTORY}/${TEMPORARY_DIRECTORY}" && cd "${SCRIPT_DIRECTORY}/${TEMPORARY_DIRECTORY}" &&
+	curl -O https://www.openssl.org/source/openssl-1.1.1q.tar.gz
+
+openssl=$(find . -name "openssl*" | head -n 1)
+echo $openssl
+tar xf $openssl
+cd ${openssl%.*.*} && ./config && make
+mkdir -p "$1/openssl/" && cp $(find . -name "lib*.so.*") "$1/openssl/"
+rm -rf "${SCRIPT_DIRECTORY}/${TEMPORARY_DIRECTORY}"
