@@ -24,7 +24,7 @@ private:
     Branch _branch1;
     Branch _branch2;
 
-    QStringList getCommonArchs(const QString& arch);
+    QStringList getCommonArchs();
 
     void getUniquePkgs(const QString& arch);
     void compareBranches(const QString& arch);

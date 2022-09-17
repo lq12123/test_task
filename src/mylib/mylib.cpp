@@ -5,17 +5,29 @@ Mylib::Mylib(const QString& branch1, const QString& branch2,
              QObject* parent)
     : QObject{parent}, _branch1{branch1}, _branch2{branch2} {}
 
-
+/**
+ * @brief Mylib::compare
+ * Iterates over the common architectures of both branches
+ * and compares branches, looking for unique packages for each
+ * branch, and also compares package versions.
+ */
 void Mylib::compare()
-{}
+{
+    QStringList archs = getCommonArchs();
+
+    for (auto&& arch : archs)
+    {
+        compareBranches(arch);
+        compareVersions(arch);
+    }
+}
 
 /**
  * @brief Mylib::getCommonArchs
- * @param arch
  * @return a list of common architectures supported by both
- *  branches.
+ * branches.
  */
-QStringList Mylib::getCommonArchs(const QString& arch)
+QStringList Mylib::getCommonArchs()
 {
     QStringList common_archs;
 
