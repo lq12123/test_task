@@ -40,12 +40,12 @@ QHash<QString, QString> JsonWork::getPkgNamesAndVersions(const QString& key_1,
 
     if (parse_error.errorString().toInt() == QJsonParseError::NoError)
     {
-        QJsonArray json_arr = doc[key_1].toArray();
+        auto json_arr = doc[key_1].toArray();
 
         for (auto it = json_arr.cbegin(); it != json_arr.cend(); ++it)
         {
-            QString pkg_name = QJsonValue(*it)[key_2].toString();
-            QString pkg_version = QJsonValue(*it)[key_2].toString();
+            auto pkg_name = QJsonValue(*it)[key_2].toString();
+            auto pkg_version = QJsonValue(*it)[key_3].toString();
 
             pkg_names_and_versions[pkg_name] = pkg_version;
         }
@@ -70,7 +70,7 @@ void JsonWork::getUniquePkgsToWrite(const QStringList& uniquePkgNames)
 
     if (parse_error.errorString().toInt() == QJsonParseError::NoError)
     {
-        QJsonArray pkgs_arr = doc["packages"].toArray();
+        auto pkgs_arr = doc["packages"].toArray();
 
         for (auto it = pkgs_arr.cbegin(); it != pkgs_arr.cend(); ++it)
         {
@@ -129,7 +129,7 @@ void JsonWork::writeToJsonFileAsync(const QString& arch,
 
         if (parse_error.errorString().toInt() == QJsonParseError::NoError)
         {
-            QJsonObject cur_data(doc.object());
+            auto cur_data(doc.object());
 
             QJsonObject json_pkgs{ {"packages", _data_to_write} };
             json_pkgs["length"] = _cnt_unique_pkg_names;
@@ -162,7 +162,7 @@ QStringList JsonWork::getData(const QString& key_1, const QString& key_2) const
 
     if (parse_error.errorString().toInt() == QJsonParseError::NoError)
     {
-        QJsonArray json_arr = doc[key_1].toArray();
+        auto json_arr = doc[key_1].toArray();
 
         for (auto it = json_arr.cbegin(); it != json_arr.cend(); ++it)
         {

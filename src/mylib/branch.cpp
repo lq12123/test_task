@@ -36,7 +36,7 @@ void Branch::getSupportedArchs()
     query.addQueryItem("branch", _branch_name);
     target_url.setQuery(query);
 
-    QString response(sendQuery(target_url));
+    auto response(sendQuery(target_url));
     JsonWork json_parse(response);
 
     _supported_archs = json_parse.getData("archs", "arch");
@@ -110,7 +110,8 @@ QStringList Branch::getPkgNames(const QString& arch)
 
     QStringList pkg_names;
 
-    for (auto&& key : _pkg_names_and_versions.keys())
+    auto keys = _pkg_names_and_versions.keys();
+    for (auto&& key : keys)
     {
         pkg_names.append(key);
     }
