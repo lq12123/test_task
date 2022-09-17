@@ -135,3 +135,13 @@ QStringList Branch::getUniquePkgNames() const
 {
     return _unique_pkg_names;
 }
+
+/**
+ * @brief Branch::getPkgNamesAndVersions
+ * @return a dictionary containing package names and their
+ * versions.
+ */
+QHash<QString, QString> Branch::getPkgNamesAndVersions() const
+{
+    return _pkg_names_and_versions;
+}

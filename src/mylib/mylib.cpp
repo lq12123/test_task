@@ -88,3 +88,40 @@ void Mylib::compareBranches(const QString& arch)
     json_worker_2.writeToJsonFile(arch,
                                   "uniquePkgsInSecondBranch");
 }
+
+/**
+ * @brief Mylib::compareVersions
+ * Selects common @p arch architecture packages, the version
+ * of which in the first branch is greater than in the second,
+ * then writes their json file using the "largerVersionPkgs"
+ * key.
+ * @param arch
+ */
+void Mylib::compareVersions(const QString& arch)
+{
+    QHash<QString, QString> pkg_names_and_verions_fst_branch =
+           _branch1.getPkgNamesAndVersions();
+    QHash<QString, QString> pkg_names_and_verions_scnd_branch =
+           _branch2.getPkgNamesAndVersions();
+
+    QStringList result_pkg_names;
+
+    for (auto&& pkg_name : pkg_names_and_verions_fst_branch)
+    {
+        QString pkg_version_1 = pkg_names_and_verions_fst_branch[pkg_name];
+        QString pkg_version_2 = pkg_names_and_verions_scnd_branch[pkg_name];
+
+        if (!(pkg_version_1.isEmpty() || pkg_version_2.isEmpty()) &&
+                pkg_version_1 > pkg_version_2)
+        {
+            result_pkg_names.append(pkg_name);
+        }
+    }
+
+    JsonWork json_worker(_branch1.getResponse());
+
+    json_worker.getUniquePkgsToWrite(result_pkg_names);
+
+    json_worker.writeToJsonFile(arch,
+                                "largerVersionPkgs");
+}

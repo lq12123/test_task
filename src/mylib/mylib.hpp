@@ -28,6 +28,7 @@ private:
 
     void getUniquePkgs(const QString& arch);
     void compareBranches(const QString& arch);
+    void compareVersions(const QString& arch);
 };
 
 #endif // MYLIB_H

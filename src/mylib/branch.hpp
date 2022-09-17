@@ -20,6 +20,7 @@ public:
     QStringList getPkgNames(const QString& arch);
     QString 	getResponse() const;
     QStringList getUniquePkgNames() const;
+    QHash<QString, QString> getPkgNamesAndVersions() const;
 
     void setUniquePkgNames(const QStringList& pkgNames);
 
