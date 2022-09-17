@@ -5,6 +5,13 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 
+#include <QFuture>
+#include <QtConcurrent>
+#include <QDir>
+#include <QFile>
+
+#define RESULT_FOLDER_NAME "result"
+
 JsonWork::JsonWork(const QString& jsonData, QObject* parent)
     : QObject{parent}, _json_data{jsonData} {}
 
@@ -45,6 +52,96 @@ QHash<QString, QString> JsonWork::getPkgNamesAndVersions(const QString& key_1,
     }
 
     return pkg_names_and_versions;
+}
+
+/**
+ * @brief JsonWork::getUniquePkgsToWrite
+ * Parses the response from the server to get packages whose names
+ * match the names from the @p uniquePkgNames, adding them to a class
+ * variable, for further work with this data.
+ * @param uniquePkgNames
+ */
+void JsonWork::getUniquePkgsToWrite(const QStringList& uniquePkgNames)
+{
+    QJsonDocument doc;
+    QJsonParseError parse_error;
+
+    doc = QJsonDocument::fromJson(_json_data.toUtf8(), &parse_error);
+
+    if (parse_error.errorString().toInt() == QJsonParseError::NoError)
+    {
+        QJsonArray pkgs_arr = doc["packages"].toArray();
+
+        for (auto it = pkgs_arr.cbegin(); it != pkgs_arr.cend(); ++it)
+        {
+            _data_to_write.append(*it);
+        }
+
+        _cnt_unique_pkg_names = uniquePkgNames.size();
+    }
+}
+
+/**
+ * @brief JsonWork::writeToJsonFile
+ * Writes data to a json file in a separate thread and displays
+ * information about the readiness.
+ * @param arch
+ * @param entryName
+ * @todo Add a ready message to be printed during the execution of the
+ * thread that writes the data.
+ */
+void JsonWork::writeToJsonFile(const QString& arch, const QString& entryName) const
+{
+    QFuture<void> future = QtConcurrent::run(this,
+                                             &JsonWork::writeToJsonFileAsync,
+                                             arch,
+                                             entryName
+                                             );
+    while (future.isRunning())
+    {
+        qInfo() << "Writing...";
+    }
+    qInfo() << "Data for the " << arch << " architecture is written.";
+}
+
+/**
+ * @brief JsonWork::writeToJsonFileAsync
+ * Write @p arch architecture packages to a json file by the @p entryName
+ * key.
+ * @param arch
+ * @param entryName
+ */
+void JsonWork::writeToJsonFileAsync(const QString& arch,
+                                    const QString& entryName) const
+{
+    QDir dir("");
+    if (!dir.exists(RESULT_FOLDER_NAME))
+    { dir.mkdir(RESULT_FOLDER_NAME); }
+    dir.setPath(QString("%1/%2").arg(dir.currentPath(), RESULT_FOLDER_NAME));
+
+    QFile fout(QString("%1/%2.json").arg(dir.path(), arch));
+    if (fout.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QJsonDocument doc;
+        QJsonParseError parse_error;
+
+        doc = QJsonDocument::fromJson(fout.readAll(), &parse_error);
+
+        if (parse_error.errorString().toInt() == QJsonParseError::NoError)
+        {
+            QJsonObject cur_data(doc.object());
+
+            QJsonObject json_pkgs{ {"packages", _data_to_write} };
+            json_pkgs["length"] = _cnt_unique_pkg_names;
+
+            cur_data[entryName] = json_pkgs;
+
+            fout.reset();
+            fout.write(QJsonDocument(cur_data).toJson());
+        }
+
+        fout.close();
+    }
 }
 
 /**

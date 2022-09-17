@@ -16,6 +16,7 @@ Loader::Loader(const QUrl& url, QObject *parent)
  * Starts a thread to send a request and receive data from
  * the server.
  * @return the response received from the server.
+ * @todo Add an updatable data ready message output.
  */
 QString Loader::sendQuery()
 {
@@ -39,7 +40,7 @@ QString Loader::sendQuery()
 
 /**
  * @brief Loader::get
- * Send a get request by _url.
+ * Send a get request by URL.
  */
 void Loader::get()
 {

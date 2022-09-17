@@ -117,3 +117,21 @@ QStringList Branch::getPkgNames(const QString& arch)
 
     return pkg_names;
 }
+
+/**
+ * @brief Branch::getResponse
+ * @return the response that the server returned.
+ */
+QString Branch::getResponse() const
+{
+    return _response;
+}
+
+/**
+ * @brief Branch::getUniquePkgNames
+ * @return a list of unique package names.
+ */
+QStringList Branch::getUniquePkgNames() const
+{
+    return _unique_pkg_names;
+}

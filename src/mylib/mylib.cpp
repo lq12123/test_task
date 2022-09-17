@@ -1,4 +1,5 @@
 #include <mylib.hpp>
+#include <jsonwork.hpp>
 
 Mylib::Mylib(const QString& branch1, const QString& branch2,
              QObject* parent)
@@ -63,4 +64,27 @@ void Mylib::getUniquePkgs(const QString& arch)
 
     _branch1.setUniquePkgNames(unique_pkg_names_fst_branch);
     _branch2.setUniquePkgNames(unique_pkg_names_scnd_branch);
+}
+
+/**
+ * @brief Mylib::compareBranches
+ * Performs a comparison of two branches, and then writes the
+ * unique packages of each branch to a json file under the keys
+ * "uniquePkgsInFirstBranch" and "uniquePkgsInSecondBranch".
+ * @param arch
+ */
+void Mylib::compareBranches(const QString& arch)
+{
+    getUniquePkgs(arch);
+
+    JsonWork json_worker_1(_branch1.getResponse());
+    JsonWork json_worker_2(_branch2.getResponse());
+
+    json_worker_1.getUniquePkgsToWrite(_branch1.getUniquePkgNames());
+    json_worker_2.getUniquePkgsToWrite(_branch2.getUniquePkgNames());
+
+    json_worker_1.writeToJsonFile(arch,
+                                  "uniquePkgsInFirstBranch");
+    json_worker_2.writeToJsonFile(arch,
+                                  "uniquePkgsInSecondBranch");
 }

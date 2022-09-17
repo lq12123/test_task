@@ -16,10 +16,18 @@ public:
                                                    const QString& key_3) const;
     QStringList getData(const QString& key_1, const QString& key_2) const;
 
+    void getUniquePkgsToWrite(const QStringList& uniquePkgNames);
+    void writeToJsonFile(const QString& arch, const QString& entryName) const;
+
 signals:
 
 private:
     QString _json_data;
+    QJsonArray _data_to_write;
+    qint32 _cnt_unique_pkg_names;
+
+    void writeToJsonFileAsync(const QString& arch,
+                              const QString& entryName) const;
 };
 
 #endif // JSONWORK_H

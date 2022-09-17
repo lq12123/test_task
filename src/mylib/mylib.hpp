@@ -27,6 +27,7 @@ private:
     QStringList getCommonArchs(const QString& arch);
 
     void getUniquePkgs(const QString& arch);
+    void compareBranches(const QString& arch);
 };
 
 #endif // MYLIB_H

@@ -18,6 +18,8 @@ public:
 
     QStringList getArchs();
     QStringList getPkgNames(const QString& arch);
+    QString 	getResponse() const;
+    QStringList getUniquePkgNames() const;
 
     void setUniquePkgNames(const QStringList& pkgNames);
 
