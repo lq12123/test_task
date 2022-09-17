@@ -43,6 +43,16 @@ void Branch::getSupportedArchs()
 }
 
 /**
+ * @brief Branch::setUniquePkgNames
+ * Sets a list of unique package names specific to this branch.
+ * @param pkgNames
+ */
+void Branch::setUniquePkgNames(const QStringList& pkgNames)
+{
+    _unique_pkg_names = pkgNames;
+}
+
+/**
  * @brief Branch::sendQuery
  * @param url
  * @return the response received from the server to the request sent
@@ -69,4 +79,41 @@ QString Branch::getAllPackages(const QString& arch) const
     loader.addQueryParam("arch", arch);
 
     return loader.sendQuery();
+}
+
+/**
+ * @brief Branch::getPkgNamesAndVersions
+ * Gets a dictionary containing the package name (key) and
+ * version (value) for the @p arch architecture.
+ * @param arch
+ */
+void Branch::getPkgNamesAndVersions(const QString& arch)
+{
+    _response = getAllPackages(arch);
+    JsonWork json_parser(_response);
+
+    _pkg_names_and_versions = json_parser.getPkgNamesAndVersions("packages",
+                                                                 "name",
+                                                                 "version");
+}
+
+/**
+ * @brief Branch::getPkgNames
+ * Gets the package names from a dictionary containing the
+ * package name and version for the @p arch architecture.
+ * @param arch
+ * @return a list of package names for @p arch architecture.
+ */
+QStringList Branch::getPkgNames(const QString& arch)
+{
+    getPkgNamesAndVersions(arch);
+
+    QStringList pkg_names;
+
+    for (auto&& key : _pkg_names_and_versions.keys())
+    {
+        pkg_names.append(key);
+    }
+
+    return pkg_names;
 }
