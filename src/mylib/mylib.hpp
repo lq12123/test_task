@@ -11,16 +11,13 @@
 #include <QObject>
 #include <branch.hpp>
 
-#define OUTPUT_FOLDER "result"
-
 class MYLIB_EXPORT Mylib : public QObject
 {
     Q_OBJECT
 
 public:
     explicit Mylib(const QString& branch1, const QString& branch2,
-                   const QString& outputFolderName = OUTPUT_FOLDER,
-                   QObject* parent = nullptr);
+                   const QString& outputFolderName, QObject* parent = nullptr);
 
     void compare();
 private:

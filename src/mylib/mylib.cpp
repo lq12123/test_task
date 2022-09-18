@@ -1,10 +1,21 @@
 #include <mylib.hpp>
 #include <jsonwork.hpp>
 
+#define OUTPUT_FOLDER "result" // the resulting default folder
+
 Mylib::Mylib(const QString& branch1, const QString& branch2,
              const QString& outputFolderName, QObject* parent)
-    : QObject{parent}, _branch1{branch1}, _branch2{branch2},
-      _output_folder_name{outputFolderName} {}
+    : QObject{parent}, _branch1{branch1}, _branch2{branch2}
+{
+    if (outputFolderName.size())
+    {
+        _output_folder_name = outputFolderName;
+    }
+    else
+    {
+        _output_folder_name = OUTPUT_FOLDER;
+    }
+}
 
 /**
  * @brief Mylib::compare
