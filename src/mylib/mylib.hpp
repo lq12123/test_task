@@ -1,15 +1,17 @@
 #ifndef MYLIB_H
 #define MYLIB_H
 
-#include <QtCore/qglobal.h>
-#include <QObject>
-#include <branch.hpp>
-
 #if defined(MYLIB_LIBRARY)
 #  define MYLIB_EXPORT Q_DECL_EXPORT
 #else
 #  define MYLIB_EXPORT Q_DECL_IMPORT
 #endif
+
+#include <QtCore/qglobal.h>
+#include <QObject>
+#include <branch.hpp>
+
+#define OUTPUT_FOLDER "result"
 
 class MYLIB_EXPORT Mylib : public QObject
 {
@@ -17,12 +19,14 @@ class MYLIB_EXPORT Mylib : public QObject
 
 public:
     explicit Mylib(const QString& branch1, const QString& branch2,
+                   const QString& outputFolderName = OUTPUT_FOLDER,
                    QObject* parent = nullptr);
 
     void compare();
 private:
     Branch _branch1;
     Branch _branch2;
+    QString _output_folder_name;
 
     QStringList getCommonArchs();
 

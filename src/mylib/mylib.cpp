@@ -2,8 +2,9 @@
 #include <jsonwork.hpp>
 
 Mylib::Mylib(const QString& branch1, const QString& branch2,
-             QObject* parent)
-    : QObject{parent}, _branch1{branch1}, _branch2{branch2} {}
+             const QString& outputFolderName, QObject* parent)
+    : QObject{parent}, _branch1{branch1}, _branch2{branch2},
+      _output_folder_name{outputFolderName} {}
 
 /**
  * @brief Mylib::compare
@@ -96,9 +97,11 @@ void Mylib::compareBranches(const QString& arch)
     json_worker_2.getUniquePkgsToWrite(_branch2.getUniquePkgNames());
 
     json_worker_1.writeToJsonFile(arch,
-                                  "uniquePkgsInFirstBranch");
+                                  "uniquePkgsInFirstBranch",
+                                  _output_folder_name);
     json_worker_2.writeToJsonFile(arch,
-                                  "uniquePkgsInSecondBranch");
+                                  "uniquePkgsInSecondBranch",
+                                  _output_folder_name);
 }
 
 /**
@@ -139,5 +142,6 @@ void Mylib::compareVersions(const QString& arch)
     json_worker.getUniquePkgsToWrite(result_pkg_names);
 
     json_worker.writeToJsonFile(arch,
-                                "largerVersionPkgs");
+                                "largerVersionPkgs",
+                                _output_folder_name);
 }

@@ -17,7 +17,8 @@ public:
     QStringList getData(const QString& key_1, const QString& key_2) const;
 
     void getUniquePkgsToWrite(const QStringList& uniquePkgNames);
-    void writeToJsonFile(const QString& arch, const QString& entryName) const;
+    void writeToJsonFile(const QString& arch, const QString& entryName,
+                         const QString& folderName) const;
 
 signals:
 
@@ -27,7 +28,9 @@ private:
     qint32 _cnt_unique_pkg_names;
 
     void writeToJsonFileAsync(const QString& arch,
-                              const QString& entryName) const;
+                              const QString& entryName,
+                              const QString& folderName
+                              ) const;
 };
 
 #endif // JSONWORK_H

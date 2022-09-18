@@ -10,8 +10,6 @@
 #include <QDir>
 #include <QFile>
 
-#define RESULT_FOLDER_NAME "result"
-
 JsonWork::JsonWork(const QString& jsonData, QObject* parent)
     : QObject{parent}, _json_data{jsonData} {}
 
@@ -87,15 +85,18 @@ void JsonWork::getUniquePkgsToWrite(const QStringList& uniquePkgNames)
  * information about the readiness.
  * @param arch
  * @param entryName
+ * @param folderName
  * @todo Add a ready message to be printed during the execution of the
  * thread that writes the data.
  */
-void JsonWork::writeToJsonFile(const QString& arch, const QString& entryName) const
+void JsonWork::writeToJsonFile(const QString& arch, const QString& entryName,
+                               const QString& folderName) const
 {
     QFuture<void> future = QtConcurrent::run(this,
                                              &JsonWork::writeToJsonFileAsync,
                                              arch,
-                                             entryName
+                                             entryName,
+                                             folderName
                                              );
     while (future.isRunning())
     {
@@ -110,14 +111,16 @@ void JsonWork::writeToJsonFile(const QString& arch, const QString& entryName) co
  * key.
  * @param arch
  * @param entryName
+ * @param folderName
  */
 void JsonWork::writeToJsonFileAsync(const QString& arch,
-                                    const QString& entryName) const
+                                    const QString& entryName,
+                                    const QString& folderName) const
 {
     QDir dir("");
-    if (!dir.exists(RESULT_FOLDER_NAME))
-    { dir.mkdir(RESULT_FOLDER_NAME); }
-    dir.setPath(QString("%1/%2").arg(dir.currentPath(), RESULT_FOLDER_NAME));
+    if (!dir.exists(folderName))
+    { dir.mkdir(folderName); }
+    dir.setPath(QString("%1/%2").arg(dir.currentPath(), folderName));
 
     QFile fout(QString("%1/%2.json").arg(dir.path(), arch));
     if (fout.open(QIODevice::ReadWrite | QIODevice::Text))
