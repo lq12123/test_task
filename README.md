@@ -1,7 +1,14 @@
 # test_task
 ![qt5](https://img.shields.io/badge/QT-5.15.2-brightgreen) ![qt5](https://img.shields.io/badge/QT-6-brightgreen) ![openssl](https://img.shields.io/badge/OpenSSL-1.1.1x-brightgreen) ![platform](https://img.shields.io/badge/platform-linux-orange)
-___
+
 Shared library for working with [REST API](https://rdb.altlinux.org/api/). Searches for unique packages for each of the two branches, and also looks for packages whose version is greater in the first branch than in the second. The result of the work is written to a json file with the name of the architecture to which the selected packages belong.
+
+- [Build from source](#build-from-source)
+- [Requirements](#requirements)
+- [Building](#building)
+- [Installation](#installation)
+- [CLI Usage](#cli-usage)
+    
 ## Build from source
 ## Requirements
 + **Recommended Qt 5.x.x or Qt 6**
