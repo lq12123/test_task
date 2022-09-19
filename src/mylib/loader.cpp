@@ -1,9 +1,7 @@
 #include <loader.hpp>
 
 #include <QNetworkRequest>
-#include <QThread>
 #include <QUrlQuery>
-#include <QDebug>
 
 Loader::Loader(const QUrl& url, QObject *parent)
     : QObject{parent}, _url{url}
@@ -16,7 +14,6 @@ Loader::Loader(const QUrl& url, QObject *parent)
  * Starts a thread to send a request and receive data from
  * the server.
  * @return the response received from the server.
- * @todo Add an updatable data ready message output.
  */
 QString Loader::sendQuery()
 {
@@ -28,12 +25,7 @@ QString Loader::sendQuery()
     this->moveToThread(&th);
     th.start();
 
-    while (th.isRunning())
-    {
-        qInfo() << "Waiting...";
-    }
-
-    qInfo() << "Data from " << _url.url() << " received";
+    waiting(th, _url.url(), READING);
 
     return _response;
 }

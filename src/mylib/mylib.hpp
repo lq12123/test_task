@@ -21,8 +21,8 @@ public:
 
     void compare();
 private:
-    Branch _branch1;
-    Branch _branch2;
+    Branch  _branch1;
+    Branch  _branch2;
     QString _output_folder_name;
 
     QStringList getCommonArchs();

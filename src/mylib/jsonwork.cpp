@@ -1,4 +1,5 @@
 #include <jsonwork.hpp>
+#include <loader.hpp>
 
 #include <QJsonDocument>
 #include <QJsonValue>
@@ -86,8 +87,6 @@ void JsonWork::getUniquePkgsToWrite(const QStringList& uniquePkgNames)
  * @param arch
  * @param entryName
  * @param folderName
- * @todo Add a ready message to be printed during the execution of the
- * thread that writes the data.
  */
 void JsonWork::writeToJsonFile(const QString& arch, const QString& entryName,
                                const QString& folderName) const
@@ -98,11 +97,8 @@ void JsonWork::writeToJsonFile(const QString& arch, const QString& entryName,
                                              entryName,
                                              folderName
                                              );
-    while (future.isRunning())
-    {
-        qInfo() << "Writing...";
-    }
-    qInfo() << "Data for the " << arch << " architecture is written.";
+
+    Loader::waiting(future, arch, Loader::WRITING);
 }
 
 /**

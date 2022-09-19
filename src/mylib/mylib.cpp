@@ -32,6 +32,8 @@ void Mylib::compare()
         compareBranches(arch);
         compareVersions(arch);
     }
+
+    QTextStream(stdout) << "Done!" << Qt::endl;
 }
 
 /**

@@ -27,12 +27,12 @@ public:
 signals:
 
 private:
-    QString _response;
-    QString _branch_name;
+    QString 	_response;
+    QString 	_branch_name;
     QStringList _supported_archs;
     QStringList _unique_pkg_names;
-    QHash<QString, QString> _pkg_names_and_versions;
 
+    QHash<QString, QString> _pkg_names_and_versions;
     QString sendQuery(const QUrl& url) const;
     QString getAllPackages(const QString& arch) const;
 

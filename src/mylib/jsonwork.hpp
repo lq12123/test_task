@@ -23,9 +23,9 @@ public:
 signals:
 
 private:
-    QString _json_data;
+    QString	   _json_data;
     QJsonArray _data_to_write;
-    qint32 _cnt_unique_pkg_names;
+    qint32 	   _cnt_unique_pkg_names;
 
     void writeToJsonFileAsync(const QString& arch,
                               const QString& entryName,
