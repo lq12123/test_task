@@ -1,11 +1,11 @@
 #include <QCoreApplication>
+
 #include <getopt.h>
 #include <mylib.hpp>
 #include <cstdio>
 #include <iostream>
 #include <cstring>
 #include <version.h>
-#include <QDebug>
 
 #define BUFSIZE 32
 
