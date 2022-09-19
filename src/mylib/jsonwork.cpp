@@ -117,10 +117,10 @@ void JsonWork::writeToJsonFileAsync(const QString& arch,
                                     const QString& entryName,
                                     const QString& folderName) const
 {
-    QDir dir("");
-    if (!dir.exists(folderName))
-    { dir.mkdir(folderName); }
-    dir.setPath(QString("%1/%2").arg(dir.currentPath(), folderName));
+    QDir dir(folderName);
+
+    dir.setPath(dir.absolutePath());
+    dir.mkpath(dir.path());
 
     QFile fout(QString("%1/%2.json").arg(dir.path(), arch));
     if (fout.open(QIODevice::ReadWrite | QIODevice::Text))

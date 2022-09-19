@@ -24,8 +24,6 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-sized-deallocation")
-
 configure_file(
     "${PROJECT_SOURCE_DIR}/version.h.in"
     "${PROJECT_BINARY_DIR}/version.h"
@@ -47,10 +45,28 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Network
+    Qt${QT_VERSION_MAJOR}::Concurrent
     ssl
     crypto
     mylib
 )
 
+file(GLOB EXCLUDE_QTLIB
+    "${PATH_TO_QT}/lib/*Qt${QT_VERSION_MAJOR}Network*"
+    "${PATH_TO_QT}/lib/*Qt${QT_VERSION_MAJOR}DBus*"
+)
+
+file(GLOB DEPS
+    "${PATH_TO_QT}/lib/*.so*")
+foreach(lib ${DEPS})
+    if (NOT ${lib} IN_LIST EXCLUDE_QTLIB)
+        list(APPEND LINKED_QTLIBS ${lib})
+    endif()
+endforeach()
+
 install(TARGETS ${PROJECT_NAME}
     DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES ${LINKED_QTLIBS}
+    TYPE LIB)
+install(IMPORTED_RUNTIME_ARTIFACTS
+    mylib)
