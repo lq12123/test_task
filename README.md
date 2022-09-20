@@ -36,6 +36,8 @@ ___
 
 *branch_1* - the name of the first branch.
 
-*branch_2* - the name of the first branch.
+*branch_2* - the name of the second branch.
+
+*RESULTING PATH* - path where to save the result.
 
 Type "-v"or "--version" to find out the current version of the program. Use the "-h" or "--help" option to get help about the program.
