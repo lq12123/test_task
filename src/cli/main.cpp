@@ -48,10 +48,8 @@ int main(int argc, char *argv[])
 
     int branch_cnt = 0;
     int opchar     = 0;
-    int opind;
 
-
-    while( -1 != (opchar = getopt_long(argc, argv, "hvbo:1:2:", opts, &opind)) )
+    while( -1 != (opchar = getopt_long(argc, argv, "hvbo:1:2:", opts, nullptr)) )
     {
         switch(opchar)
         {
@@ -73,6 +71,7 @@ int main(int argc, char *argv[])
             break;
         case 'o':
             sprintf(output_folder, "%s", optarg);
+            break;
         default:
             std::cout << "Invalid parameters passed!" << std::endl;
         }
